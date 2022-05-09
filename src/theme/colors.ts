@@ -1,8 +1,9 @@
 export default {
   textTitle: '#303943',
-  search: '#30394340',
+  search: 'rgb(137, 140, 147)',
   white: '#fff',
   searchbar: '#F5F5F5',
+  darkGreen: 'rgb(0, 149,118)',
   green: '#6AF3CA',
   blue: '#77C4FE',
   purple: '#A06EB4',
