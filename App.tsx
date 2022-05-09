@@ -1,11 +1,14 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+
+import {NavigationContainer} from '@react-navigation/native';
+
+import {HomeScreen} from '~screens/HomeScreen';
 
 const App = () => {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>App</Text>
-    </View>
+    <NavigationContainer>
+      <HomeScreen />
+    </NavigationContainer>
   );
 };
 
