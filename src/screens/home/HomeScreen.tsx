@@ -36,12 +36,10 @@ export const HomeScreen = () => {
               <CustomText style={styles.headerTitle} variant="header">
                 What Pokemon are you looking for?
               </CustomText>
-
               {/* Searchbar */}
               <View style={styles.searchBarContainer}>
                 <CustomTextInput />
               </View>
-
               {/* Categories */}
               <View style={styles.cardsContainer}>
                 <CategoryCard title="Pokedex" color={colors.darkGreen} />
@@ -52,7 +50,6 @@ export const HomeScreen = () => {
                 <CategoryCard title="Type Charts" color={colors.brown} />
               </View>
             </View>
-
             {/* News */}
             <View style={{marginTop: hp(38), marginHorizontal: wp(28)}}>
               <View style={styles.newsHeader}>
@@ -62,7 +59,6 @@ export const HomeScreen = () => {
                 </TouchableOpacity>
               </View>
             </View>
-
             {/* News Events */}
             <View style={{marginHorizontal: wp(28), paddingBottom: hp(20)}}>
               <NewsEvent
