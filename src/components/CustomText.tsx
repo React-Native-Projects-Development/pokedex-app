@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, TextStyle} from 'react-native';
 
 import fonts from '~config/fonts';
 import colors from '~theme/colors';
@@ -13,6 +13,7 @@ type Variants = {
   search: 'search';
   card: 'card';
   link: 'link';
+  newsHeaderTitle: 'newsHeaderTitle';
   newsTitle: 'newsTitle';
   newsSubtitle: 'newsSubtitle';
   tag: 'tag';
@@ -23,10 +24,15 @@ type Variants = {
 
 interface Props {
   variant?: keyof Variants;
+  style?: TextStyle;
 }
 
-export const CustomText: React.FC<Props> = ({children, variant = 'body'}) => {
-  return <Text style={styles[variant]}>{children}</Text>;
+export const CustomText: React.FC<Props> = ({
+  children,
+  variant = 'body',
+  style = {},
+}) => {
+  return <Text style={[styles[variant], style]}>{children}</Text>;
 };
 
 const styles = StyleSheet.create({
@@ -47,10 +53,10 @@ const styles = StyleSheet.create({
   },
   card: {
     fontFamily: fonts.CircularBold,
-    fontsize: wp(14),
+    fontSize: wp(14),
     fontWeight: '700',
     lineHeight: hp(14),
-    letterspacing: wp(0),
+    letterSpacing: wp(0),
     textAlign: 'left',
     color: colors.white,
   },
@@ -59,9 +65,16 @@ const styles = StyleSheet.create({
     fontSize: wp(14),
     fontWeight: '500',
     lineHeight: hp(42),
-    letterSpacing: wp(0),
-    textAlign: 'right',
     color: colors.link,
+  },
+  newsHeaderTitle: {
+    fontFamily: fonts.CircularBlack,
+    fontSize: wp(20),
+    fontWeight: '900',
+    lineHeight: hp(42),
+    letterSpacing: wp(0),
+    textAlign: 'left',
+    color: colors.textTitle,
   },
   newsTitle: {
     fontFamily: fonts.CircularBold,
