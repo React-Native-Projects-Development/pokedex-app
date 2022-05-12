@@ -8,31 +8,33 @@ import colors from 'theme/colors';
 interface Props {
   title: string;
   color: string;
+  onPress?: () => void;
 }
 
 export const CategoryCard = ({
   title = 'Example',
   color = colors.green,
+  onPress = () => {},
 }: Props) => {
   return (
-    <TouchableOpacity activeOpacity={0.8}>
-      <View
-        style={[
-          styles.card,
-          {
-            backgroundColor: color,
-          },
-        ]}>
-        <View style={styles.imgContainer}>
-          <Image
-            source={require('~assets/images/pokeball-white.png')}
-            style={styles.img}
-          />
-        </View>
-        <CustomText variant="card" style={styles.cardTitle}>
-          {title}
-        </CustomText>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={onPress}
+      style={[
+        styles.card,
+        {
+          backgroundColor: color,
+        },
+      ]}>
+      <View style={styles.imgContainer}>
+        <Image
+          source={require('~assets/images/pokeball-white.png')}
+          style={styles.img}
+        />
       </View>
+      <CustomText variant="card" style={styles.cardTitle}>
+        {title}
+      </CustomText>
     </TouchableOpacity>
   );
 };

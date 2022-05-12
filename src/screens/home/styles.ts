@@ -1,11 +1,12 @@
 import {StyleSheet} from 'react-native';
-
 import colors from 'theme/colors';
+
 import {hp, wp} from '~theme/metrics';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    zIndex: 999,
   },
   headerTitle: {
     marginTop: hp(117),
@@ -17,15 +18,6 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
     paddingBottom: 58,
-    backgroundColor: colors.white,
-  },
-  imgContainer: {
-    position: 'absolute',
-    top: -58,
-    right: -86,
-    height: hp(249),
-    width: hp(249),
-    zIndex: 1,
   },
   scrollView: {
     flexGrow: 1,
@@ -44,6 +36,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  containerCurveGray: {
+    backgroundColor: colors.searchbar,
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    bottom: 0,
+  },
+  containerCurveWhite: {
+    backgroundColor: colors.white,
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    bottom: 0,
+  },
+  curveRight: {
+    right: 0,
+    borderTopLeftRadius: 40,
+  },
+  curveLeft: {
+    left: 0,
+    borderTopRightRadius: 40,
+  },
+  curveRotate: {
+    transform: [{rotate: '180deg'}],
+  },
+  newsContainer: {
+    flex: 1,
+    backgroundColor: colors.searchbar,
   },
 });
 
