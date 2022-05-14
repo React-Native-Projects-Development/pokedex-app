@@ -5,12 +5,13 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {HomeScreen} from '~screens/home/HomeScreen';
 import {PokedexScreen} from '~screens/pokedex/PokedexScreen';
 import {PokemonDetailsScreen} from '~screens/pokemon/PokemonDetailsScreen';
+import {SinglePokemon} from 'interfaces/app-interfaces';
 
 export type PokedexStackParams = {
   HomeScreen: undefined;
   PokedexScreen: undefined;
   PokemonDetailsScreen: {
-    id?: number;
+    pokemon: SinglePokemon;
   };
 };
 
