@@ -12,4 +12,5 @@ export default {
   brown: '#D1938C',
   link: '#6C79DB',
   subtitle: '#30394360',
+  divider: '#F4F5F4',
 };
