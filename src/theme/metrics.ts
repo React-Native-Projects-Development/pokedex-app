@@ -30,6 +30,6 @@ export const hp = (dimension: number) =>
   hpDP(`${(dimension / heightDimension) * 100}%`);
 
 // Global Dimensions
-export const SCREEN_WIDTH = Dimensions.get('window').width;
+export const SCREEN_WIDTH = Math.round(Dimensions.get('screen').width);
 
-export const SCREEN_HEIGHT = Dimensions.get('window').height;
+export const SCREEN_HEIGHT = Math.round(Dimensions.get('screen').height);
