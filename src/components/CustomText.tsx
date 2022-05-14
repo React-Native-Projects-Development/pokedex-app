@@ -24,6 +24,7 @@ type Variants = {
   pokemonNumber: 'pokemonNumber';
   pokemonTagType: 'pokemonTagType';
   pokemonSectionTitle: 'pokemonSectionTitle';
+  tabText: 'tabText';
 };
 
 interface Props {
@@ -185,6 +186,14 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: hp(28),
     textAlign: 'left',
+    color: colors.textTitle,
+  },
+  tabText: {
+    fontFamily: fonts.CircularMedium,
+    fontWeight: '500',
+    fontSize: wp(14),
+    textTransform: 'capitalize',
+    textAlign: 'center',
     color: colors.textTitle,
   },
 });
