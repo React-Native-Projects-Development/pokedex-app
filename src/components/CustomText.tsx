@@ -20,6 +20,10 @@ type Variants = {
   tagBold: 'tagBold';
   number: 'number';
   pokemonType: 'pokemonType';
+  pokemonName: 'pokemonName';
+  pokemonNumber: 'pokemonNumber';
+  pokemonTagType: 'pokemonTagType';
+  pokemonSectionTitle: 'pokemonSectionTitle';
 };
 
 interface Props {
@@ -114,8 +118,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.CircularBook,
     fontSize: wp(14),
     fontWeight: '400',
-    lineHeight: hp(24),
-    letterSpacing: wp(0),
+    lineHeight: hp(20),
     textAlign: 'left',
     color: colors.textTitle,
   },
@@ -154,5 +157,34 @@ const styles = StyleSheet.create({
     letterSpacing: wp(0),
     textAlign: 'right',
     color: colors.white,
+  },
+  pokemonName: {
+    fontFamily: fonts.CircularBlack,
+    fontSize: wp(36),
+    fontWeight: '900',
+    textAlign: 'left',
+    color: colors.white,
+  },
+  pokemonNumber: {
+    fontFamily: fonts.CircularBlack,
+    fontSize: wp(18),
+    fontWeight: '900',
+    textAlign: 'right',
+    color: colors.white,
+  },
+  pokemonTagType: {
+    fontFamily: fonts.CircularBold,
+    fontSize: wp(12),
+    fontWeight: '700',
+    textAlign: 'center',
+    color: colors.white,
+  },
+  pokemonSectionTitle: {
+    fontFamily: fonts.CircularBold,
+    fontSize: wp(16),
+    fontWeight: '700',
+    lineHeight: hp(28),
+    textAlign: 'left',
+    color: colors.textTitle,
   },
 });
