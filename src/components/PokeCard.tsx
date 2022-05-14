@@ -1,10 +1,14 @@
-import fonts from 'config/fonts';
-import {SinglePokemon} from 'interfaces/app-interfaces';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import ImageColors from 'react-native-image-colors';
-import colors from 'theme/colors';
 
+import ImageColors from 'react-native-image-colors';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+
+import {SinglePokemon} from 'interfaces/app-interfaces';
+import {PokedexStackParams} from 'navigation/AppNavigator';
+import colors from 'theme/colors';
+import fonts from 'config/fonts';
 import {hp, wp} from 'theme/metrics';
 import {CustomText} from './CustomText';
 import {FadeInImage} from './FadeInImage';
@@ -17,6 +21,7 @@ interface Props {
 export const PokeCard = ({item, index}: Props) => {
   const [bgColor, setBgColor] = useState(colors.search);
   const isMounted = useRef(true);
+  const navigation = useNavigation<StackNavigationProp<PokedexStackParams>>();
 
   const getBgColor = useCallback(async () => {
     const result = await ImageColors.getColors(item.picture, {
@@ -51,7 +56,14 @@ export const PokeCard = ({item, index}: Props) => {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      onPress={() => console.log(item.name)}
+      onPress={() =>
+        navigation.navigate('PokemonDetailsScreen', {
+          pokemon: {
+            ...item,
+            color: bgColor,
+          },
+        })
+      }
       style={[styles.cardContainer, cardCustomStyles]}>
       {/* Number */}
       <CustomText variant="number" style={styles.number}>
