@@ -18,9 +18,6 @@ interface Props {
 export const TabsNavigator = ({id}: Props) => {
   return (
     <Tab.Navigator
-      screenOptions={{
-        swipeEnabled: true,
-      }}
       sceneContainerStyle={{
         backgroundColor: colors.white,
       }}
