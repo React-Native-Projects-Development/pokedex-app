@@ -24,6 +24,7 @@ type Variants = {
   pokemonNumber: 'pokemonNumber';
   pokemonTagType: 'pokemonTagType';
   pokemonSectionTitle: 'pokemonSectionTitle';
+  pokemonNameHeader: 'pokemonNameHeader';
   tabText: 'tabText';
 };
 
@@ -187,6 +188,15 @@ const styles = StyleSheet.create({
     lineHeight: hp(28),
     textAlign: 'left',
     color: colors.textTitle,
+  },
+  pokemonNameHeader: {
+    fontFamily: fonts.CircularBlack,
+    fontSize: wp(22),
+    fontWeight: '900',
+    lineHeight: hp(28),
+    textAlign: 'center',
+    color: colors.white,
+    textTransform: 'capitalize',
   },
   tabText: {
     fontFamily: fonts.CircularMedium,
