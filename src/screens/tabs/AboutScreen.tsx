@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
 
-import {ScrollView} from 'react-native-gesture-handler';
 import {MaterialTopTabScreenProps} from '@react-navigation/material-top-tabs';
+import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 
 import {CustomText} from 'components/CustomText';
 import {usePokemon} from 'hooks/usePokemon';
@@ -22,11 +22,9 @@ export const AboutScreen = ({
     }
   }, [route?.params!]);
 
-  console.log(pokemon?.description);
-
   return (
     <View style={{flex: 1}}>
-      <ScrollView
+      <BottomSheetScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: 31,
@@ -107,7 +105,9 @@ export const AboutScreen = ({
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <MaleIcon width={wp(17)} height={hp(14)} />
                   <CustomText style={{marginLeft: wp(5)}}>
-                    {pokemon?.maleRate && pokemon?.maleRate > -1 ? `${pokemon?.maleRate}%` : '-'}
+                    {pokemon?.maleRate && pokemon?.maleRate > -1
+                      ? `${pokemon?.maleRate}%`
+                      : '-'}
                   </CustomText>
                 </View>
                 <View
@@ -118,7 +118,9 @@ export const AboutScreen = ({
                   }}>
                   <FemaleIcon width={wp(20)} height={hp(17)} />
                   <CustomText style={{marginLeft: wp(5)}}>
-                    {pokemon?.femaleRate && pokemon?.femaleRate > -1 ? `${pokemon?.femaleRate}%` : '-'}
+                    {pokemon?.femaleRate && pokemon?.femaleRate > -1
+                      ? `${pokemon?.femaleRate}%`
+                      : '-'}
                   </CustomText>
                 </View>
               </View>
@@ -211,7 +213,7 @@ export const AboutScreen = ({
             </View>
           </View>
         </View>
-      </ScrollView>
+      </BottomSheetScrollView>
     </View>
   );
 };
