@@ -1,16 +1,16 @@
 import React, {useCallback, useMemo, useRef} from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Animated, Image, TouchableOpacity, View} from 'react-native';
 
 import {StackScreenProps} from '@react-navigation/stack';
 import BottomSheet from '@gorhom/bottom-sheet';
 
-import {PokedexStackParams} from 'navigation/AppNavigator';
-import ArrowBackIcon from 'components/icons/ArrowBackIcon';
-import {hp, SCREEN_HEIGHT, wp} from 'theme/metrics';
-import HeartOutlineIcon from 'components/icons/HeartOutlineIcon';
 import styles from './styles';
-import {CustomText} from 'components/CustomText';
 import {TabsNavigator} from 'navigation/TabsNavigator';
+import {PokedexStackParams} from 'navigation/AppNavigator';
+import {hp, SCREEN_HEIGHT, wp} from 'theme/metrics';
+import {CustomText} from 'components/CustomText';
+import ArrowBackIcon from 'components/icons/ArrowBackIcon';
+import HeartOutlineIcon from 'components/icons/HeartOutlineIcon';
 
 interface Props
   extends StackScreenProps<PokedexStackParams, 'PokemonDetailsScreen'> {}
@@ -19,35 +19,68 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
   const {pokemon} = route.params;
   const {id, name, color} = pokemon;
 
+  // Header opacity
+  const headerNameOpacity = useRef(new Animated.Value(0)).current;
+
+  // Pokemon Info opacity
+  const pokemonInfoOpacity = useRef(new Animated.Value(1)).current;
+
+  // Bottomsheet
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
-
+  const imageOpacity = useRef(new Animated.Value(1)).current;
   // variables
   const snapPoints = useMemo(
-    () => [SCREEN_HEIGHT < 812 ? '45%' : '50%', '70%'],
+    () => [
+      SCREEN_HEIGHT < 812 ? SCREEN_HEIGHT * 0.45 : SCREEN_HEIGHT * 0.5,
+      SCREEN_HEIGHT - 120,
+    ],
     [],
   );
-
   // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
+  const handleSheetChanges = useCallback(
+    (index: number) => {
+      if (index === 0) {
+        Animated.timing(imageOpacity, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+        }).start();
+        Animated.timing(headerNameOpacity, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }).start();
+        Animated.timing(pokemonInfoOpacity, {
+          toValue: 1,
+          duration: 50,
+          useNativeDriver: true,
+        }).start();
+      } else {
+        Animated.timing(imageOpacity, {
+          toValue: 0,
+          duration: 150,
+          useNativeDriver: true,
+        }).start();
+        Animated.timing(headerNameOpacity, {
+          toValue: 1,
+          duration: 100,
+          useNativeDriver: true,
+        }).start();
+        Animated.timing(pokemonInfoOpacity, {
+          toValue: 0,
+          duration: 1,
+          useNativeDriver: true,
+        }).start();
+      }
+    },
+    [imageOpacity, headerNameOpacity, pokemonInfoOpacity],
+  );
 
   return (
-    <View style={{backgroundColor: color, flex: 1, zIndex: -1}}>
+    <View style={{...styles.container, backgroundColor: color}}>
       {/* Square */}
-      <View
-        style={{
-          position: 'absolute',
-          left: -30,
-          top: -40,
-          width: 143,
-          height: 143,
-          backgroundColor: 'rgba(255,255,255, 0.1)',
-          transform: [{rotate: '75deg'}],
-          borderRadius: 24,
-        }}
-      />
+      <View style={styles.square} />
 
       {/* Header */}
       <View style={styles.header}>
@@ -56,6 +89,15 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
           onPress={() => navigation.goBack()}>
           <ArrowBackIcon width={wp(22)} height={hp(13.65)} color="#fff" />
         </TouchableOpacity>
+
+        <Animated.Text
+          style={{
+            opacity: headerNameOpacity,
+            ...styles.headerText,
+          }}>
+          {pokemon.name}
+        </Animated.Text>
+
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => console.log('pressed')}>
@@ -64,18 +106,16 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
       </View>
 
       {/* Pokemon Name, Number and Types */}
-      <View style={{marginTop: hp(30), marginHorizontal: wp(26)}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <CustomText
-            variant="pokemonName"
-            style={{textTransform: 'capitalize'}}>
+
+      <View style={styles.pokemonInfoContainer}>
+        <View style={styles.row}>
+          <Animated.Text
+            style={{
+              opacity: pokemonInfoOpacity,
+              ...styles.pokemonInfoName,
+            }}>
             {name}
-          </CustomText>
+          </Animated.Text>
           <CustomText variant="pokemonNumber">
             {parseInt(id, 10) < 10
               ? `#00${id}`
@@ -99,15 +139,7 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
 
       <View style={{marginTop: hp(25)}}>
         {/* Pokeball */}
-        <View
-          style={{
-            flex: 1,
-            width: '100%',
-            position: 'absolute',
-            top: hp(20),
-            alignItems: 'center',
-            opacity: 0.4,
-          }}>
+        <View style={styles.pokeballContainer}>
           <Image
             source={require('~assets/images/pokeball-white.png')}
             style={{width: wp(183), height: hp(183)}}
@@ -120,24 +152,20 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
+        onChange={handleSheetChanges}
         handleComponent={() => (
-          <View
+          <Animated.View
             style={{
-              flex: 1,
-              width: '100%',
-              position: 'absolute',
-              top: hp(-175),
-              alignItems: 'center',
-              height: hp(225),
+              opacity: imageOpacity,
+              ...styles.pokemonImgContainer,
             }}>
             <Image
               source={{uri: pokemon.picture}}
-              style={{width: wp(250), height: hp(223)}}
+              style={styles.pokemonImg}
               resizeMode="contain"
             />
-          </View>
-        )}
-        onChange={handleSheetChanges}>
+          </Animated.View>
+        )}>
         <TabsNavigator id={id} />
       </BottomSheet>
     </View>
