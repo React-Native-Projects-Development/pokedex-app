@@ -1,5 +1,5 @@
 import fonts from 'config/fonts';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import colors from 'theme/colors';
 
 import {hp, wp} from 'theme/metrics';
@@ -7,15 +7,22 @@ import {hp, wp} from 'theme/metrics';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    zIndex: -1,
+    zIndex: 1000,
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   header: {
+    justifyContent: 'flex-end',
+    paddingHorizontal: 28,
+    zIndex: 999999,
+  },
+  headerContent: {
+    marginBottom: Platform.OS === 'ios' ? hp(20) : 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 60,
-    height: 40,
-    paddingHorizontal: 28,
   },
   headerText: {
     fontFamily: fonts.CircularBlack,
