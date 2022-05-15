@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {Animated, Image, TouchableOpacity, View} from 'react-native';
 
 import {StackScreenProps} from '@react-navigation/stack';
@@ -11,6 +11,8 @@ import {hp, SCREEN_HEIGHT, wp} from 'theme/metrics';
 import {CustomText} from 'components/CustomText';
 import ArrowBackIcon from 'components/icons/ArrowBackIcon';
 import HeartOutlineIcon from 'components/icons/HeartOutlineIcon';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import HeartFilledIcon from 'components/icons/HeartFilledIcon';
 
 interface Props
   extends StackScreenProps<PokedexStackParams, 'PokemonDetailsScreen'> {}
@@ -18,6 +20,11 @@ interface Props
 export const PokemonDetailsScreen = ({navigation, route}: Props) => {
   const {pokemon} = route.params;
   const {id, name, color} = pokemon;
+  const {top} = useSafeAreaInsets();
+
+  const [isLiked, setIsLiked] = useState(false);
+
+  const likeUnlikePokemon = () => setIsLiked(prevState => !prevState);
 
   // Header opacity
   const headerNameOpacity = useRef(new Animated.Value(0)).current;
@@ -33,7 +40,7 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
   const snapPoints = useMemo(
     () => [
       SCREEN_HEIGHT < 812 ? SCREEN_HEIGHT * 0.45 : SCREEN_HEIGHT * 0.5,
-      SCREEN_HEIGHT - 120,
+      SCREEN_HEIGHT - 150,
     ],
     [],
   );
@@ -83,26 +90,44 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
       <View style={styles.square} />
 
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => navigation.goBack()}>
-          <ArrowBackIcon width={wp(22)} height={hp(13.65)} color="#fff" />
-        </TouchableOpacity>
-
-        <Animated.Text
-          style={{
-            opacity: headerNameOpacity,
-            ...styles.headerText,
-          }}>
-          {pokemon.name}
-        </Animated.Text>
-
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => console.log('pressed')}>
-          <HeartOutlineIcon width={20} height={20} />
-        </TouchableOpacity>
+      <View style={[styles.header, {height: top + 60}]}>
+        <View style={styles.headerContent}>
+          <TouchableOpacity
+            style={[
+              {
+                width: wp(22),
+                height: hp(25),
+              },
+              styles.center,
+            ]}
+            activeOpacity={0.8}
+            onPress={() => navigation.goBack()}>
+            <ArrowBackIcon width={wp(22)} height={hp(13.65)} color="#fff" />
+          </TouchableOpacity>
+          <Animated.Text
+            style={{
+              opacity: headerNameOpacity,
+              ...styles.headerText,
+            }}>
+            {pokemon.name}
+          </Animated.Text>
+          <TouchableOpacity
+            style={[
+              {
+                width: wp(20),
+                height: hp(25),
+              },
+              styles.center,
+            ]}
+            activeOpacity={0.8}
+            onPress={likeUnlikePokemon}>
+            {isLiked ? (
+              <HeartFilledIcon />
+            ) : (
+              <HeartOutlineIcon width={20} height={20} />
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Pokemon Name, Number and Types */}
