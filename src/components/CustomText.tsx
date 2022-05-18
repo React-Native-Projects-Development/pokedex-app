@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.CircularBold,
     fontSize: wp(12),
     fontWeight: '700',
-    letterSpacing: wp(0),
     textAlign: 'center',
     color: colors.white,
   },
