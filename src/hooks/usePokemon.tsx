@@ -1,6 +1,7 @@
 import {useState} from 'react';
 
 import {
+  EvolutionChainResponse,
   IndividualPokemonResponse,
   SpeciesResponse,
 } from 'interfaces/app-interfaces';
@@ -19,6 +20,10 @@ export const usePokemon = () => {
       pokemonResponse.data.species.url,
     );
 
+    const evolutionResponse = await pokemonApi.get<EvolutionChainResponse>(
+      speciesResponse.data.evolution_chain.url,
+    );
+
     setPokemon({
       ...pokemonResponse.data,
       description: speciesResponse.data.flavor_text_entries[6].flavor_text,
@@ -32,6 +37,7 @@ export const usePokemon = () => {
           : 100 - (speciesResponse.data.gender_rate / 1 / 8) * 100,
       egg_groups: speciesResponse.data.egg_groups.map(group => group.name),
       egg_cycle: speciesResponse.data.hatch_counter,
+      evolution_chain: evolutionResponse.data.chain,
     });
     setIsLoading(false);
   };
