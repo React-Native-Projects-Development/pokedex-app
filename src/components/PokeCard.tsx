@@ -67,11 +67,11 @@ export const PokeCard = ({item, index}: Props) => {
       style={[styles.cardContainer, cardCustomStyles]}>
       {/* Number */}
       <CustomText variant="number" style={styles.number}>
-        {index < 10
-          ? `#00${index + 1}`
+        {parseInt(item.id, 10) < 10
+          ? `#00${item.id}`
           : index < 100
-          ? `#0${index}`
-          : `#${index}`}
+          ? `#0${item.id}`
+          : `#${item.id}`}
       </CustomText>
       {/* Pokeball */}
       <View style={styles.pokeballContainer}>
