@@ -26,7 +26,7 @@ export const usePokemon = () => {
 
     setPokemon({
       ...pokemonResponse.data,
-      description: speciesResponse.data.flavor_text_entries[6].flavor_text,
+      description: speciesResponse.data.flavor_text_entries[0].flavor_text,
       femaleRate:
         speciesResponse.data.gender_rate === -1
           ? -1
