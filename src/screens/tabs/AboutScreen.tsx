@@ -1,20 +1,20 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {View} from 'react-native';
 
 import {MaterialTopTabScreenProps} from '@react-navigation/material-top-tabs';
 import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 
 import {CustomText} from 'components/CustomText';
-import {usePokemon} from 'hooks/usePokemon';
 import {hp, wp} from 'theme/metrics';
 import colors from 'theme/colors';
 import MaleIcon from 'components/icons/MaleIcon';
 import FemaleIcon from 'components/icons/FemaleIcon';
+import { PokemonDetailsContext } from 'context/PokemonDetailsContext';
 
 export const AboutScreen = ({
   route,
 }: MaterialTopTabScreenProps<any, 'AboutScreen'>) => {
-  const {pokemon, getPokemonData} = usePokemon();
+  const {pokemon, getPokemonData} = useContext(PokemonDetailsContext);
 
   useEffect(() => {
     if (route?.params?.id) {
@@ -79,7 +79,7 @@ export const AboutScreen = ({
               {Number.isSafeInteger(pokemon?.weight! * 0.1)
                 ? pokemon?.weight! * 0.1
                 : (pokemon?.weight! * 0.1).toFixed(2)}
-              kg
+              {" "}kg
             </CustomText>
           </View>
         </View>
