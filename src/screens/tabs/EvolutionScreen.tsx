@@ -18,10 +18,16 @@ export const EvolutionScreen = () => {
     pokemon?.evolution_chain?.evolves_to[0]?.evolves_to[0]?.evolution_details.findIndex(
       detail => detail.item,
     );
-  const happinessIdx =
-    pokemon?.evolution_chain?.evolves_to[0]?.evolves_to[0]?.evolution_details?.findIndex(
-      detail => detail.item,
-    );
+  // const happinessIdx =
+  //   pokemon?.evolution_chain?.evolves_to[0]?.evolves_to[0]?.evolution_details?.findIndex(
+  //     detail => detail.min_happiness,
+  //   );
+
+  const specificPokemon = pokemon?.evolution_chain?.evolves_to.find(
+    evolution => evolution.species.name === pokemon.name,
+  );
+
+  // console.log(pokemon?.evolution_chain);
 
   return (
     <View style={styles.container}>
@@ -35,12 +41,13 @@ export const EvolutionScreen = () => {
         ) : (
           <View style={{marginTop: hp(26), paddingHorizontal: wp(15)}}>
             {/* More than 2 evolutions */}
-            {pokemon?.evolution_chain?.evolves_to.length! > 2 ? (
+            {pokemon?.evolution_chain?.evolves_to?.length! > 2 &&
+            !pokemon?.evolves_from_species ? (
               pokemon?.evolution_chain?.evolves_to.map((evolution, index) => {
-                const itemIdx = evolution.evolution_details.findIndex(
+                const foundItemIdx = evolution.evolution_details.findIndex(
                   detail => detail.item,
                 );
-                const happinessIdx = evolution.evolution_details.findIndex(
+                const foundHappinessIdx = evolution.evolution_details.findIndex(
                   detail => detail.min_happiness,
                 );
 
@@ -72,8 +79,8 @@ export const EvolutionScreen = () => {
                         <CustomText variant="tagBold" style={styles.lvlText}>
                           {evolution?.evolution_details[0]?.min_level
                             ? `Lvl ${evolution?.evolution_details[0]?.min_level}`
-                            : evolution?.evolution_details[itemIdx]?.item
-                            ? `Use ${evolution?.evolution_details[itemIdx]?.item?.name}`
+                            : evolution?.evolution_details[foundItemIdx]?.item
+                            ? `Use ${evolution?.evolution_details[foundItemIdx]?.item?.name}`
                             : `${
                                 evolution?.evolution_details[0]?.trigger?.name
                               } ${
@@ -82,10 +89,11 @@ export const EvolutionScreen = () => {
                                   : ''
                               }`}
 
-                          {!evolution?.evolution_details[itemIdx]?.item.name &&
+                          {!evolution?.evolution_details[foundItemIdx]?.item
+                            .name &&
                             !evolution?.evolution_details[0]?.min_level &&
                             !evolution.evolution_details[0].time_of_day &&
-                            `\n Min. Happiness (${evolution.evolution_details[happinessIdx].min_happiness})`}
+                            `\n Min. Happiness (${evolution.evolution_details[foundHappinessIdx].min_happiness})`}
                         </CustomText>
                       </View>
 
@@ -145,7 +153,12 @@ export const EvolutionScreen = () => {
                         ? `Lvl ${pokemon?.evolution_chain.evolves_to[0].evolution_details[0].min_level}`
                         : pokemon?.evolution_chain.evolves_to[0]
                             .evolution_details[0].item
-                        ? `Use ${pokemon?.evolution_chain.evolves_to[0].evolution_details[0].item.name}`
+                        ? `Use ${
+                            specificPokemon
+                              ? specificPokemon.evolution_details[0].item.name
+                              : pokemon?.evolution_chain.evolves_to[0]
+                                  .evolution_details[0].item.name
+                          }`
                         : `${
                             pokemon?.evolution_chain.evolves_to[0]
                               .evolution_details[0]?.trigger?.name
@@ -163,7 +176,13 @@ export const EvolutionScreen = () => {
                           .evolution_details[0].min_level &&
                         pokemon?.evolution_chain.evolves_to[0]
                           .evolution_details[0].trigger.name === 'level-up' &&
+                        pokemon?.evolution_chain.evolves_to[0]
+                          ?.evolution_details[0]?.min_happiness &&
                         `\n Min. Happiness (${pokemon?.evolution_chain.evolves_to[0]?.evolution_details[0]?.min_happiness})`}
+
+                      {pokemon?.evolution_chain.evolves_to[0]
+                        .evolution_details[0].turn_upside_down &&
+                        '\n Turn console upside down'}
                     </CustomText>
                   </View>
 
@@ -179,15 +198,22 @@ export const EvolutionScreen = () => {
                         source={{
                           uri: getPicture(
                             getId(
-                              pokemon?.evolution_chain.evolves_to[0]?.species
-                                .url,
+                              pokemon?.evolution_chain?.evolves_to?.length === 1
+                                ? pokemon?.evolution_chain.evolves_to[0]
+                                    ?.species.url
+                                : specificPokemon?.species.url ||
+                                    pokemon?.evolution_chain.evolves_to[0]
+                                      ?.species.url,
                             ),
                           ),
                         }}
                       />
                     </View>
                     <CustomText style={styles.pokemonName}>
-                      {pokemon?.evolution_chain.evolves_to[0].species.name}
+                      {pokemon?.evolution_chain.evolves_to.length === 1
+                        ? pokemon?.evolution_chain.evolves_to[0].species.name
+                        : specificPokemon?.species.name ||
+                          pokemon?.evolution_chain.evolves_to[0].species.name}
                     </CustomText>
                   </View>
                 </View>
