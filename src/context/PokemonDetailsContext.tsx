@@ -3,6 +3,7 @@ import {
   EvolutionChainResponse,
   IndividualPokemonResponse,
   SpeciesResponse,
+  TypesResponse,
 } from 'interfaces/app-interfaces';
 import React, {createContext, useState} from 'react';
 
@@ -33,6 +34,35 @@ export const PokemonDetailsProvider: React.FC = ({children}) => {
       speciesResponse.data.evolution_chain.url,
     );
 
+    const typesResponse = await Promise.all(
+      pokemonResponse.data.types.map(type =>
+        pokemonApi.get<TypesResponse>(type.type.url),
+      ),
+    );
+
+    console.log({typesResponse});
+
+    const formattedTypes = typesResponse.map(resp => ({
+      double_damage_from: resp?.data?.damage_relations?.double_damage_from,
+      half_damage_from: resp?.data?.damage_relations?.half_damage_from,
+    }));
+
+    const newTypesData =
+      formattedTypes.length === 1
+        ? {
+            double_damage_from: [...formattedTypes[0].double_damage_from],
+            half_damage_from: [...formattedTypes[0].half_damage_from],
+          }
+        : {
+            double_damage_from: [
+              ...formattedTypes[0].double_damage_from,
+              ...formattedTypes[1].double_damage_from,
+            ],
+            half_damage_from: [
+              ...formattedTypes[0].half_damage_from,
+              ...formattedTypes[1].half_damage_from,
+            ],
+          };
     setPokemon({
       ...pokemonResponse.data,
       description: speciesResponse.data.flavor_text_entries[6].flavor_text,
@@ -46,7 +76,9 @@ export const PokemonDetailsProvider: React.FC = ({children}) => {
           : 100 - (speciesResponse.data.gender_rate / 1 / 8) * 100,
       egg_groups: speciesResponse.data.egg_groups.map(group => group.name),
       egg_cycle: speciesResponse.data.hatch_counter,
+      evolves_from_species: speciesResponse?.data?.evolves_from_species,
       evolution_chain: evolutionResponse.data.chain,
+      damage_relations: newTypesData,
     });
     setIsLoading(false);
   };
