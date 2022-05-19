@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react';
-import {View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 
 import {MaterialTopTabScreenProps} from '@react-navigation/material-top-tabs';
 import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
@@ -9,7 +9,7 @@ import {hp, wp} from 'theme/metrics';
 import colors from 'theme/colors';
 import MaleIcon from 'components/icons/MaleIcon';
 import FemaleIcon from 'components/icons/FemaleIcon';
-import { PokemonDetailsContext } from 'context/PokemonDetailsContext';
+import {PokemonDetailsContext} from 'context/PokemonDetailsContext';
 
 export const AboutScreen = ({
   route,
@@ -31,16 +31,20 @@ export const AboutScreen = ({
           paddingTop: 31,
           paddingHorizontal: 27,
         }}>
-        <CustomText>
-          {pokemon?.description
-            .replace(
-              pokemon.name.toUpperCase(),
-              pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
-            )
-            .replace(/\s+/g, ' ')
-            .split('\n')
-            .join(' ')}
-        </CustomText>
+        {!pokemon?.description ? (
+          <ActivityIndicator size={20} color={colors.textTitle} />
+        ) : (
+          <CustomText>
+            {pokemon?.description
+              .replace(
+                pokemon.name.toUpperCase(),
+                pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
+              )
+              .replace(/\s+/g, ' ')
+              .split('\n')
+              .join(' ')}
+          </CustomText>
+        )}
 
         {/* Pokemon's height and weight */}
         <View
@@ -78,8 +82,8 @@ export const AboutScreen = ({
             <CustomText variant="body">
               {Number.isSafeInteger(pokemon?.weight! * 0.1)
                 ? pokemon?.weight! * 0.1
-                : (pokemon?.weight! * 0.1).toFixed(2)}
-              {" "}kg
+                : (pokemon?.weight! * 0.1).toFixed(2)}{' '}
+              kg
             </CustomText>
           </View>
         </View>
@@ -178,9 +182,10 @@ export const AboutScreen = ({
                   <CustomText
                     style={{
                       marginLeft: wp(5),
-                      textTransform: 'capitalize',
                     }}>
-                    {pokemon?.egg_cycle}
+                    One must walk {(pokemon?.egg_cycle + 1) * 255} steps before
+                    this Pokémon's egg hatches, unless utilizing bonuses like
+                    Flame Body's.
                   </CustomText>
                 </View>
               </View>
