@@ -13,4 +13,5 @@ export default {
   link: '#6C79DB',
   subtitle: '#30394360',
   divider: '#F4F5F4',
+  positive: '#4BC07A',
 };
