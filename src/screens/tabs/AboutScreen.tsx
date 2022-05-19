@@ -4,12 +4,12 @@ import {ActivityIndicator, View} from 'react-native';
 import {MaterialTopTabScreenProps} from '@react-navigation/material-top-tabs';
 import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 
+import {PokemonDetailsContext} from 'context/PokemonDetailsContext';
 import {CustomText} from 'components/CustomText';
 import {hp, wp} from 'theme/metrics';
 import colors from 'theme/colors';
 import MaleIcon from 'components/icons/MaleIcon';
 import FemaleIcon from 'components/icons/FemaleIcon';
-import {PokemonDetailsContext} from 'context/PokemonDetailsContext';
 
 export const AboutScreen = ({
   route,
