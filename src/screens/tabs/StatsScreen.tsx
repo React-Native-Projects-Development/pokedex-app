@@ -151,8 +151,11 @@ export const StatsScreen = () => {
           Double Damage From
         </CustomText>
         {pokemon?.damage_relations?.double_damage_from.length > 0 ? (
-          pokemon?.damage_relations?.double_damage_from?.map(type => (
-            <CustomText variant="body" style={{textTransform: 'capitalize'}}>
+          pokemon?.damage_relations?.double_damage_from?.map((type, index) => (
+            <CustomText
+              key={type.name + index}
+              variant="body"
+              style={{textTransform: 'capitalize'}}>
               {type.name}
             </CustomText>
           ))
@@ -165,8 +168,11 @@ export const StatsScreen = () => {
           Half Damage From
         </CustomText>
         {pokemon?.damage_relations?.half_damage_from?.length > 0 ? (
-          pokemon?.damage_relations?.half_damage_from?.map(type => (
-            <CustomText variant="body" style={{textTransform: 'capitalize'}}>
+          pokemon?.damage_relations?.half_damage_from?.map((type, index) => (
+            <CustomText
+              key={type.name + index}
+              variant="body"
+              style={{textTransform: 'capitalize'}}>
               {type.name}
             </CustomText>
           ))
