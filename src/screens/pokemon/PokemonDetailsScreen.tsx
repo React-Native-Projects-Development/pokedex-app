@@ -2,6 +2,7 @@ import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {Animated, Image, TouchableOpacity, View} from 'react-native';
 
 import {StackScreenProps} from '@react-navigation/stack';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
 
 import styles from './styles';
@@ -11,7 +12,6 @@ import {hp, SCREEN_HEIGHT, wp} from 'theme/metrics';
 import {CustomText} from 'components/CustomText';
 import ArrowBackIcon from 'components/icons/ArrowBackIcon';
 import HeartOutlineIcon from 'components/icons/HeartOutlineIcon';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import HeartFilledIcon from 'components/icons/HeartFilledIcon';
 
 interface Props
@@ -35,6 +35,7 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
   // Bottomsheet
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
+
   const imageOpacity = useRef(new Animated.Value(1)).current;
   // variables
   const snapPoints = useMemo(
@@ -172,7 +173,7 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
           />
         </View>
       </View>
-      {/* <TabsNavigator /> */}
+
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
