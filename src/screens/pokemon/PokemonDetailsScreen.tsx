@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useContext, useMemo, useRef, useState} from 'react';
 import {Animated, Image, TouchableOpacity, View} from 'react-native';
 
 import {StackScreenProps} from '@react-navigation/stack';
@@ -13,6 +13,7 @@ import {CustomText} from 'components/CustomText';
 import ArrowBackIcon from 'components/icons/ArrowBackIcon';
 import HeartOutlineIcon from 'components/icons/HeartOutlineIcon';
 import HeartFilledIcon from 'components/icons/HeartFilledIcon';
+import {PokemonDetailsContext} from 'context/PokemonDetailsContext';
 
 interface Props
   extends StackScreenProps<PokedexStackParams, 'PokemonDetailsScreen'> {}
@@ -21,6 +22,7 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
   const {pokemon} = route.params;
   const {id, name, color} = pokemon;
   const {top} = useSafeAreaInsets();
+  const {onBottomSheetChange} = useContext(PokemonDetailsContext);
 
   const [isLiked, setIsLiked] = useState(false);
 
@@ -45,45 +47,58 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
     ],
     [],
   );
+
   // callbacks
   const handleSheetChanges = useCallback(
     (index: number) => {
       if (index === 0) {
-        Animated.timing(imageOpacity, {
+        Animated.spring(imageOpacity, {
           toValue: 1,
-          duration: 200,
           useNativeDriver: true,
         }).start();
-        Animated.timing(headerNameOpacity, {
+        Animated.spring(headerNameOpacity, {
           toValue: 0,
-          duration: 200,
           useNativeDriver: true,
         }).start();
-        Animated.timing(pokemonInfoOpacity, {
+        Animated.spring(pokemonInfoOpacity, {
           toValue: 1,
-          duration: 50,
           useNativeDriver: true,
         }).start();
       } else {
-        Animated.timing(imageOpacity, {
+        Animated.spring(imageOpacity, {
           toValue: 0,
-          duration: 150,
           useNativeDriver: true,
         }).start();
-        Animated.timing(headerNameOpacity, {
+        Animated.spring(headerNameOpacity, {
           toValue: 1,
-          duration: 100,
           useNativeDriver: true,
         }).start();
-        Animated.timing(pokemonInfoOpacity, {
+        Animated.spring(pokemonInfoOpacity, {
           toValue: 0,
-          duration: 1,
           useNativeDriver: true,
         }).start();
       }
+
+      onBottomSheetChange(index);
     },
-    [imageOpacity, headerNameOpacity, pokemonInfoOpacity],
+    [imageOpacity, headerNameOpacity, pokemonInfoOpacity, onBottomSheetChange],
   );
+
+  const heartScale = useRef(new Animated.Value(1)).current;
+
+  const animateHeart = useCallback(() => {
+    Animated.spring(heartScale, {
+      toValue: 1.3,
+      speed: 200,
+      useNativeDriver: true,
+    }).start(() => {
+      Animated.spring(heartScale, {
+        toValue: 1,
+        speed: 200,
+        useNativeDriver: true,
+      }).start();
+    });
+  }, [heartScale]);
 
   return (
     <View style={{...styles.container, backgroundColor: color}}>
@@ -112,22 +127,27 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
             }}>
             {pokemon.name}
           </Animated.Text>
-          <TouchableOpacity
-            style={[
-              {
-                width: wp(20),
-                height: hp(25),
-              },
-              styles.center,
-            ]}
-            activeOpacity={0.8}
-            onPress={likeUnlikePokemon}>
-            {isLiked ? (
-              <HeartFilledIcon />
-            ) : (
-              <HeartOutlineIcon width={20} height={20} />
-            )}
-          </TouchableOpacity>
+          <Animated.View style={{transform: [{scale: heartScale}]}}>
+            <TouchableOpacity
+              style={[
+                {
+                  width: wp(20),
+                  height: hp(25),
+                },
+                styles.center,
+              ]}
+              activeOpacity={0.8}
+              onPress={() => {
+                likeUnlikePokemon();
+                animateHeart();
+              }}>
+              {isLiked ? (
+                <HeartFilledIcon />
+              ) : (
+                <HeartOutlineIcon width={20} height={20} />
+              )}
+            </TouchableOpacity>
+          </Animated.View>
         </View>
       </View>
 
@@ -179,19 +199,25 @@ export const PokemonDetailsScreen = ({navigation, route}: Props) => {
         index={0}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
-        handleComponent={() => (
-          <Animated.View
-            style={{
-              opacity: imageOpacity,
-              ...styles.pokemonImgContainer,
-            }}>
-            <Image
-              source={{uri: pokemon.picture}}
-              style={styles.pokemonImg}
-              resizeMode="contain"
-            />
-          </Animated.View>
-        )}>
+        backgroundStyle={{
+          borderTopLeftRadius: 40,
+          borderTopRightRadius: 40,
+        }}
+        handleComponent={() =>
+          imageOpacity ? (
+            <Animated.View
+              style={{
+                opacity: imageOpacity,
+                ...styles.pokemonImgContainer,
+              }}>
+              <Image
+                source={{uri: pokemon.picture}}
+                style={styles.pokemonImg}
+                resizeMode="contain"
+              />
+            </Animated.View>
+          ) : null
+        }>
         <TabsNavigator id={id} />
       </BottomSheet>
     </View>
