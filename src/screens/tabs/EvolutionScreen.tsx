@@ -27,6 +27,9 @@ export const EvolutionScreen = () => {
     evolution => evolution.species.name === pokemon.name,
   );
 
+  // console.log({pokemon});
+  // console.log({specificPokemon});
+
   // console.log(pokemon?.evolution_chain);
 
   return (
@@ -148,16 +151,20 @@ export const EvolutionScreen = () => {
                   <View style={styles.center}>
                     <RightArrowLong width={wp(22)} height={hp(11.65)} />
                     <CustomText variant="tagBold" style={styles.lvlText}>
-                      {pokemon?.evolution_chain.evolves_to[0]
-                        .evolution_details[0].min_level
+                      {specificPokemon?.evolution_details[0]?.trigger?.name ===
+                        'level-up' &&
+                      specificPokemon.evolution_details[0].time_of_day
+                        ? `${specificPokemon?.evolution_details[0]?.trigger?.name} (${specificPokemon.evolution_details[0].time_of_day})`
+                        : pokemon?.evolution_chain.evolves_to[0]
+                            .evolution_details[0].min_level
                         ? `Lvl ${pokemon?.evolution_chain.evolves_to[0].evolution_details[0].min_level}`
                         : pokemon?.evolution_chain.evolves_to[0]
                             .evolution_details[0].item
                         ? `Use ${
                             specificPokemon
-                              ? specificPokemon.evolution_details[0].item.name
+                              ? specificPokemon.evolution_details[0]?.item?.name
                               : pokemon?.evolution_chain.evolves_to[0]
-                                  .evolution_details[0].item.name
+                                  ?.evolution_details[0]?.item?.name
                           }`
                         : `${
                             pokemon?.evolution_chain.evolves_to[0]
