@@ -2,6 +2,11 @@ import * as React from 'react';
 
 import {SvgCss} from 'react-native-svg';
 
+interface Props {
+  width?: number | string;
+  height?: number | string;
+}
+
 const xml = `
 <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_1_1064)">
@@ -15,4 +20,6 @@ const xml = `
 </svg>
 `;
 
-export default () => <SvgCss xml={xml} width="100%" height="100%" />;
+export default ({height = 20, width = 20}: Props) => (
+  <SvgCss xml={xml} width={width} height={height} />
+);
