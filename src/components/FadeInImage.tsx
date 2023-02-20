@@ -28,7 +28,6 @@ export const FadeInImage = ({uri = '', style = {}}: Props) => {
 
   const onError = (err: NativeSyntheticEvent<ImageErrorEventData>) => {
     setIsLoading(false);
-    console.log(err);
   };
 
   return (
