@@ -11,6 +11,8 @@ interface PokemonDetailsContextProps {
   isLoading: boolean;
   pokemon: IndividualPokemonResponse | undefined;
   getPokemonData: (pokemonId: string) => void;
+  onBottomSheetChange: (index: number) => void;
+  bottomSheetIndex: number;
 }
 
 export const PokemonDetailsContext = createContext(
@@ -19,7 +21,10 @@ export const PokemonDetailsContext = createContext(
 
 export const PokemonDetailsProvider: React.FC = ({children}) => {
   const [pokemon, setPokemon] = useState<IndividualPokemonResponse>();
+  const [bottomSheetIndex, setBottomSheetIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+
+  const onBottomSheetChange = (index: number) => setBottomSheetIndex(index);
 
   const getPokemonData = async (pokemonId: string) => {
     const pokemonResponse = await pokemonApi.get<IndividualPokemonResponse>(
@@ -39,8 +44,6 @@ export const PokemonDetailsProvider: React.FC = ({children}) => {
         pokemonApi.get<TypesResponse>(type.type.url),
       ),
     );
-
-    console.log({typesResponse});
 
     const formattedTypes = typesResponse.map(resp => ({
       double_damage_from: resp?.data?.damage_relations?.double_damage_from,
@@ -85,7 +88,13 @@ export const PokemonDetailsProvider: React.FC = ({children}) => {
 
   return (
     <PokemonDetailsContext.Provider
-      value={{isLoading, pokemon, getPokemonData}}>
+      value={{
+        isLoading,
+        pokemon,
+        getPokemonData,
+        onBottomSheetChange,
+        bottomSheetIndex,
+      }}>
       {children}
     </PokemonDetailsContext.Provider>
   );
