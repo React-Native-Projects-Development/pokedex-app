@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   pokemonImgContainer: {
     flex: 1,
-    width: '100%',
+    alignSelf: 'center',
     position: 'absolute',
     top: hp(-175),
     alignItems: 'center',
